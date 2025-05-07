@@ -1,8 +1,8 @@
 # Project Setup
 
 Run
-docker-compose down  
-docker-compose up --build
+`docker-compose down  
+docker-compose up --build`
 
 You can then access the frontend at localhost:5173
 
