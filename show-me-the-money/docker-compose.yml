@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./apps/server
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    environment:
+      - BACKEND_PORT=${SERVER_PORT}
+      - MOCK_XERO_API_URL=${MOCK_XERO_API_URL}
+    depends_on:
+      - mock-xero-api
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./apps/ui
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:${SERVER_PORT}
+      - FRONTEND_PORT=${FRONTEND_PORT}
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  mock-xero-api:
+    image: jaypeng2015/show-me-the-money
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

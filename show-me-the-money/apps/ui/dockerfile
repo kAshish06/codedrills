@@ -1,0 +1,23 @@
+# Use official Node.js runtime as a parent image
+FROM node:23.11-alpine
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application
+COPY . .
+
+# Build the frontend (assuming you're using Vite or another build tool)
+RUN npm run build
+
+# Expose the port the frontend will run on
+EXPOSE ${FRONTEND_PORT}
+
+# Serve the app using a simple HTTP server (if Vite, React, or similar)
+CMD ["sh", "-c", "npm run preview -- --host 0.0.0.0 --port $FRONTEND_PORT"]
